@@ -1,0 +1,8 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# esbuild links its native binary in a postinstall script, and both tsup and
+# vitest need it. Nothing else in this tree runs install scripts.
+allowBuilds:
+  esbuild: true

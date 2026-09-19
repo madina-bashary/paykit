@@ -1,0 +1,20 @@
+{
+  "name": "paykit-monorepo",
+  "private": true,
+  "packageManager": "pnpm@12.4.2",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "build": "pnpm --filter paykit build",
+    "dev": "pnpm --filter demo dev",
+    "test": "pnpm --filter paykit test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "typescript": "7.0.2"
+  }
+}

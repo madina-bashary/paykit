@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Never commit real keys. .env.example is the only env file that is tracked.
+.env
+.env.*
+!.env.example
+
+.DS_Store
+*.log
+.vercel
+
+# Generated at pack time from the repo root.
+packages/paykit/README.md
+packages/paykit/LICENSE
+
+# Local editor/agent scratch
+.claude/

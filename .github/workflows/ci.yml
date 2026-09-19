@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Build first: the demo typechecks against paykit's built .d.ts files.
+      - run: pnpm --filter paykit build
+
+      - run: pnpm -r typecheck
+
+      - run: pnpm --filter paykit test
+
+      - run: pnpm --filter demo build
+        env:
+          # Placeholders only — the build must not need real credentials, and
+          # CI must never hold any.
+          NEXT_PUBLIC_STRIPE_PK: pk_test_ci
+          STRIPE_SECRET_KEY: sk_test_ci
+          NEXT_PUBLIC_PAYPAL_CLIENT_ID: ci_client_id
+          PAYPAL_CLIENT_ID: ci_client_id
+          PAYPAL_SECRET: ci_secret
+          NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID: TEST_MERCHANT
