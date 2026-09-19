@@ -279,16 +279,51 @@ provider dashboard or your own webhook route.
 
 ---
 
-## Development
+## Running it locally
+
+This is a **pnpm workspace**. `npm install` and `yarn` will not work here — the
+demo depends on `paykit` through the `workspace:*` protocol, and the lockfile is
+pnpm's. If you do not have pnpm, Node ships with corepack, which installs the
+exact pinned version:
+
+```bash
+corepack enable pnpm
+```
+
+Then, in order:
 
 ```bash
 pnpm install
-pnpm --filter paykit build     # tsup → ESM + CJS + .d.ts
-pnpm --filter paykit test      # vitest, SDKs mocked
-pnpm --filter demo dev         # the demo at localhost:3000
+pnpm --filter paykit build     # REQUIRED before the demo — it imports dist/
+pnpm --filter demo dev         # http://localhost:3000
 ```
 
-Copy `apps/demo/.env.example` to `apps/demo/.env.local` and fill in test keys.
+The build step is not optional. The demo imports `paykit` the way any consumer
+would, so without `dist/` the dev server fails to resolve it. If you are editing
+the library, run `pnpm --filter paykit dev` in a second terminal to rebuild on
+save.
+
+For a demo that can actually take a payment, copy the env file and fill in
+**test** credentials:
+
+```bash
+cp apps/demo/.env.example apps/demo/.env.local
+```
+
+Stripe test keys are at
+[dashboard.stripe.com/test/apikeys](https://dashboard.stripe.com/test/apikeys);
+PayPal sandbox credentials at
+[developer.paypal.com](https://developer.paypal.com/dashboard/applications/sandbox).
+Without them the buttons still render and the state machine still works — the
+request just fails when it reaches the provider.
+
+Other scripts:
+
+```bash
+pnpm --filter paykit test      # vitest, SDKs mocked
+pnpm -r typecheck
+pnpm --filter demo build
+```
 
 ## License
 
