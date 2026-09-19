@@ -1,0 +1,6 @@
+.vercel
+
+# Created by the Vercel CLI as bare `.env*`, which would have swallowed the
+# committed .env.example — the one file here that is meant to be tracked.
+.env*
+!.env.example

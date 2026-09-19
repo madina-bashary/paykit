@@ -20,3 +20,6 @@ packages/paykit/LICENSE
 
 # Local editor/agent scratch
 .claude/
+
+# Vercel CLI writes .env.local and .vercel here
+.vercel
